@@ -47,10 +47,11 @@ its README has the full design. Never put secret values in a repo, a log or a PR
      | ssh root@<takida-host> ci-platform register INSTANCE
    ```
    `ci-platform list` shows the state. `ci-platform sync` prints this command for every
-   unregistered instance.
+   unregistered instance. With a JIT token in `/etc/ci-platform/github-token`, skip this step
+   and just run `ci-platform sync`.
 4. **Host secrets** (only for things that can't be GitHub secrets, such as the Android keystore)
-   go in `/etc/ci-secrets/<scope>/` on Takida (root 0700). Jobs see them read-only at
-   `/run/secrets/ci/<scope>/`.
+   go in `/etc/ci-secrets/<scope>/` on Takida (root 0700). Jobs find them at
+   `/run/secrets/ci/<scope>/`, a tmpfs readable only by the job user.
 5. **Mac runner** (Apple apps only), run on the Mac mini:
    `bash ci/mac/install-runner.sh OWNER/REPO`. Re-run it to update.
 6. **Windows signing** (once Azure is set up): run `az login`, then
